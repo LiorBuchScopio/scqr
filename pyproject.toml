@@ -1,0 +1,19 @@
+[project]
+name = "scqr"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "LiorBuchScopio", email = "lior.buchmeier@scopiolabs.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "cbor2>=5.8.0",
+    "pytest>=9.0.2",
+    "segno>=1.6.6",
+    "zxing>=1.0.3",
+]
+
+[build-system]
+requires = ["uv_build>=0.8.12,<0.9.0"]
+build-backend = "uv_build"
