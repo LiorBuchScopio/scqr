@@ -52,17 +52,19 @@ def decode_data(encoded: str, *, prefix: str = "Q1:") -> Optional[Dict[str, Any]
     except Exception:
         return None
 
-    if not isinstance(packed, list) or len(packed) < 4:
+    if not isinstance(packed, list) or len(packed) < 5:
         return None
 
-    version, exp_days, barcode, refined_ranges = packed[0], packed[1], packed[2], packed[3]
+    version, exp_days, barcode = packed[0], packed[1], packed[2]
+    count_ranges = packed[3]
+    pct_ranges = packed[4]
 
     # Convert days back to epoch seconds
     exp_epoch = exp_days * 86400
 
     # Reconstruct reference ranges with observation IDs
     reference_ranges = []
-    for ref in refined_ranges:
+    for ref in count_ranges:
         if len(ref) < 3:
             continue
         ref_id, low, high = ref[0], ref[1], ref[2]
@@ -70,7 +72,20 @@ def decode_data(encoded: str, *, prefix: str = "Q1:") -> Optional[Dict[str, Any]
         reference_ranges.append({
             'id': obs_id,
             'min': low,
-            'max': high
+            'max': high,
+            'data_type': 'count',
+        })
+
+    for ref in pct_ranges:
+        if len(ref) < 3:
+            continue
+        ref_id, low, high = ref[0], ref[1], ref[2]
+        obs_id = map_ref_to_observation(ref_id)
+        reference_ranges.append({
+            'id': obs_id,
+            'min': low,
+            'max': high,
+            'data_type': 'percentage',
         })
 
     return {

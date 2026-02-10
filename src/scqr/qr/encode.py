@@ -37,16 +37,21 @@ def encode_data(data: dict, *, prefix: str = "Q1:"):
     # Convert to days since epoch (smaller integer for CBOR)
     exp_days = exp_epoch // 86400
 
-    refined_ranges = []
+    refined_ranges_count = []
+    refined_ranges_percentage= []
     for refe in reference_ranges:
         id = refe.get('id', None)
         low = refe.get('min', None)
         high = refe.get('max', None)
-        if not (id or low or high):
+        dt = refe.get('data_type',None)
+        if not (id or low or high or dt):
             continue
-        refined_ranges.append([map_observation_to_ref(id), low, high])
+        if dt == 'count':
+            refined_ranges_count.append([map_observation_to_ref(id), low, high])
+        else:
+            refined_ranges_percentage.append([map_observation_to_ref(id), low, high])
 
-    packed = [1, exp_days, barcode, refined_ranges]
+    packed = [1, exp_days, barcode, refined_ranges_count,refined_ranges_percentage]
     raw = cbor2.dumps(packed)
     compressed = zlib.compress(raw, level=9)
     encoded = base45_encode(compressed)

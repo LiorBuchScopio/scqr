@@ -72,6 +72,7 @@ class TestDecodeRoundtrip:
             assert obs_id in decoded_ranges
             assert decoded_ranges[obs_id]['min'] == original['min']
             assert decoded_ranges[obs_id]['max'] == original['max']
+            assert decoded_ranges[obs_id]['data_type'] == original['data_type']
 
 
 class TestDecodeInvalid:
