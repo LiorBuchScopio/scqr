@@ -52,7 +52,7 @@ def decode_data(encoded: str, *, prefix: str = "Q1:") -> Optional[Dict[str, Any]
     except Exception:
         return None
 
-    if not isinstance(packed, list) or len(packed) < 5:
+    if not isinstance(packed, list) or len(packed) < 4:
         return None
 
     version, exp_days, barcode = packed[0], packed[1], packed[2]
