@@ -57,7 +57,7 @@ def decode_data(encoded: str, *, prefix: str = "Q1:") -> Optional[Dict[str, Any]
 
     version, exp_days, barcode = packed[0], packed[1], packed[2]
     count_ranges = packed[3]
-    pct_ranges = packed[4]
+    pct_ranges = packed[4] if len(packed) > 4 else []
 
     # Convert days back to epoch seconds
     exp_epoch = exp_days * 86400
@@ -69,6 +69,8 @@ def decode_data(encoded: str, *, prefix: str = "Q1:") -> Optional[Dict[str, Any]
             continue
         ref_id, low, high = ref[0], ref[1], ref[2]
         obs_id = map_ref_to_observation(ref_id)
+        if obs_id is None:
+            continue
         reference_ranges.append({
             'id': obs_id,
             'min': low,
@@ -81,6 +83,8 @@ def decode_data(encoded: str, *, prefix: str = "Q1:") -> Optional[Dict[str, Any]
             continue
         ref_id, low, high = ref[0], ref[1], ref[2]
         obs_id = map_ref_to_observation(ref_id)
+        if obs_id is None:
+            continue
         reference_ranges.append({
             'id': obs_id,
             'min': low,

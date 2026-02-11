@@ -46,10 +46,10 @@
         {"id":"pappenheimer_bodies","min":1,"max":10000,"data_type":"percentage"},
         {"id":"agglutination","min":1,"max":10000,"data_type":"percentage"},
         {"id":"rouleaux_formation","min":1,"max":10000,"data_type":"percentage"},
-        {"id":"platelets","min":1,"max":10000,"data_type":"percentage"},
+        {"id":"platelet_density","min":1,"max":10000,"data_type":"percentage"},
         {"id":"large_platelets","min":1,"max":10000,"data_type":"percentage"},
         {"id":"giant_platelets","min":1,"max":10000,"data_type":"percentage"},
-        {"id":"hypogranular_platelet","min":1,"max":10000,"data_type":"percentage"},
+        {"id":"hypogranular_platelets","min":1,"max":10000,"data_type":"percentage"},
         {"id":"platelet_clumps","min":1,"max":10000,"data_type":"percentage"},
         {"id":"platelet_satellitism","min":1,"max":10000,"data_type":"percentage"}
     ]
