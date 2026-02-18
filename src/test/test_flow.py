@@ -4,7 +4,7 @@ import os
 import pytest
 import segno
 
-from scqr import encode_data, decode_data, generate_qr
+from scqr import encode_data, decode_data, generate_qr, read_qr
 from scqr.qr.encode import base45_encode
 from scqr.qr.decode import base45_decode
 
@@ -84,6 +84,40 @@ class TestDecodeInvalid:
     ])
     def test_invalid_input_returns_none(self, invalid_input):
         assert decode_data(invalid_input) is None
+
+
+class TestReadQR:
+    def test_read_qr_roundtrip(self, test_ranges, tmp_path):
+        encoded = encode_data(test_ranges)
+        assert encoded is not None
+        generate_qr(encoded, path=str(tmp_path) + '/')
+        qr_path = str(tmp_path / 'qr.png')
+        decoded = read_qr(qr_path)
+        assert decoded is not None
+        assert decoded['version'] == 1
+        assert decoded['barcode'] == test_ranges['barcode']
+        assert len(decoded['reference_range']) == len(test_ranges['reference_range'])
+
+    def test_read_qr_reference_ranges(self, test_ranges, tmp_path):
+        encoded = encode_data(test_ranges)
+        assert encoded is not None
+        generate_qr(encoded, path=str(tmp_path) + '/')
+        qr_path = str(tmp_path / 'qr.png')
+        decoded = read_qr(qr_path)
+        assert decoded is not None
+
+        original_ranges = {r['id']: r for r in test_ranges['reference_range']}
+        decoded_ranges = {r['id']: r for r in decoded['reference_range']}
+
+        for obs_id, original in original_ranges.items():
+            assert obs_id in decoded_ranges
+            assert decoded_ranges[obs_id]['min'] == original['min']
+            assert decoded_ranges[obs_id]['max'] == original['max']
+
+    def test_read_qr_invalid_image(self, tmp_path):
+        fake_img = tmp_path / 'fake.png'
+        fake_img.write_bytes(b'\x00\x00\x00')
+        assert read_qr(str(fake_img)) is None
 
 
 class TestBase45:

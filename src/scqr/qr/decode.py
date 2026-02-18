@@ -1,6 +1,8 @@
 from typing import Any, Dict, List, Optional
 import zlib
 import cbor2
+import zxingcpp
+from PIL import Image
 from .utils import CELL_MAP
 
 # Base45 alphabet (RFC 9285) - must match encode.py
@@ -98,3 +100,26 @@ def decode_data(encoded: str, *, prefix: str = "Q1:") -> Optional[Dict[str, Any]
         'barcode': barcode,
         'reference_range': reference_ranges
     }
+
+
+def read_qr(path: str, *, prefix: str = "Q1:") -> Optional[Dict[str, Any]]:
+    """
+    Read a QR code image and decode its data.
+
+    Args:
+        path: Path to the QR code image file.
+        prefix: Expected prefix of the encoded payload.
+
+    Returns:
+        Decoded dictionary or None if reading/decoding fails.
+    """
+    try:
+        img = Image.open(path)
+    except Exception:
+        return None
+
+    results = zxingcpp.read_barcodes(img)
+    if not results:
+        return None
+
+    return decode_data(results[0].text, prefix=prefix)
