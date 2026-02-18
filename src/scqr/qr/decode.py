@@ -123,3 +123,24 @@ def read_qr(path: str, *, prefix: str = "Q1:") -> Optional[Dict[str, Any]]:
         return None
 
     return decode_data(results[0].text, prefix=prefix)
+
+def read_qr_to_string(path: str) -> Optional[str]:
+    """
+    Read a QR code image and return the raw encoded string.
+
+    Args:
+        path: Path to the QR code image file.
+
+    Returns:
+        The data string of the QR, or None if reading fails.
+    """
+    try:
+        img = Image.open(path)
+    except Exception:
+        return None
+
+    results = zxingcpp.read_barcodes(img)
+    if not results:
+        return None
+
+    return results[0].text
