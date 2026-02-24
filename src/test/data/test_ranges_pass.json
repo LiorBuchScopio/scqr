@@ -1,5 +1,5 @@
 {
-    "barcode":"QC-TEST-X3-PASS",
+    "barcode":"QC-TEST-X4-PASS",
     "expiration":"2029-02-01T11:20:06+02:00",
     "reference_range":[
         {"id":"segmented_neutrophil","min":0,"max":10000,"data_type":"count"},
