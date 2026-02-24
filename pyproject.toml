@@ -1,7 +1,7 @@
 [project]
 name = "scqr"
-version = "0.3.2"
-description = "Add your description here"
+version = "0.3.3"
+description = "Package to read QRs and barcodes, parse them into CBM QC data and encoding into CBM QC QRs"
 readme = "README.md"
 authors = [
     { name = "LiorBuchScopio", email = "lior.buchmeier@scopiolabs.com" }
@@ -18,3 +18,8 @@ dependencies = [
 [build-system]
 requires = ["uv_build>=0.8.12,<0.9.0"]
 build-backend = "uv_build"
+
+[[tool.uv.index]]
+name = "scopio-store"
+url = "https://scopio-104939124827.d.codeartifact.us-east-1.amazonaws.com/pypi/scopio-store/simple/"
+publish-url = "https://scopio-104939124827.d.codeartifact.us-east-1.amazonaws.com/pypi/scopio-store/"
